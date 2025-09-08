@@ -1,4 +1,13 @@
 import streamlit as st
 
-st.title("Hello, Streamlit!")
-st.write("これは最小構成の Streamlitアプリです。")
+st.title("掛け算アプリ")
+
+# 数値入力
+a = st.number_input("1つ目の数を入力してください", value=1)
+b = st.number_input("2つ目の数を入力してください", value=1)
+
+# 計算
+result = a * b
+
+# 結果表示
+st.write(f"結果: {a} × {b} = {result}")
