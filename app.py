@@ -1,5 +1,6 @@
 import streamlit as st
 
+'''
 st.title("掛け算アプリ")
 
 # 数値入力
@@ -11,3 +12,11 @@ result = a * b
 
 # 結果表示
 st.write(f"結果: {a} × {b} = {result}")
+'''
+
+import streamlit as st
+
+count = 0
+if st.button("カウントアップ"):
+    count += 1
+st.write("カウント:", count)
