@@ -20,6 +20,8 @@ if 'draws' not in st.session_state:
     st.session_state.draws = 0
 if 'total_games' not in st.session_state:
     st.session_state.total_games = 0
+if "chips" not in st.session_state:
+    st.session_state.chips = 100
 
 def card_name(card_num):
     """カード番号を名前に変換"""
@@ -59,12 +61,15 @@ def make_prediction(prediction):
     elif prediction == "high" and st.session_state.next_card > st.session_state.current_card:
         st.session_state.result = "勝ち"
         st.session_state.wins += 1
+        st.session_state.chips += bet
     elif prediction == "low" and st.session_state.next_card < st.session_state.current_card:
         st.session_state.result = "勝ち"
         st.session_state.wins += 1
+        st.session_state.chips += bet
     else:
         st.session_state.result = "負け"
         st.session_state.losses += 1
+        st.session_state.chips -= bet
     
     st.session_state.total_games += 1
     st.session_state.game_started = True
@@ -111,8 +116,13 @@ if st.session_state.total_games > 0:
 # 現在のカード表示
 st.markdown(f"### 🎯 現在のカード: **{card_name(st.session_state.current_card)}**")
 
+st.markdown(f"### 💰 所持チップ: **{st.session_state.chips}**")
+
 # 予想ボタン
 col1, col2, col3 = st.columns([1, 1, 1])
+
+# ベット額入力
+bet = st.number_input("ベット額を入力してください", min_value=1, max_value=st.session_state.chips, value=10)
 
 with col1:
     if st.button("📈 High (大きい)", key="high_btn", type="secondary"):
@@ -152,6 +162,11 @@ if st.session_state.game_started and st.session_state.result:
         st.session_state.prediction = None
         st.rerun()
 
+if st.session_state.chips == 0:
+    st.session_state.game_started = False
+    st.session_state.result = None
+    st.markdown(f"### 🃏 次のカード: **{card_name(st.session_state.next_card)}**")
+
 # フッター
 st.markdown("---")
-st.markdown("*ヒント: 確率がすべて正しいとは限りません。自らの直観を信じてみることも必要かも？*")
+st.markdown("*ヒント: 自分の直感を信じて勝利を掴み取ろう*")
